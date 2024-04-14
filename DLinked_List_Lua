@@ -1,0 +1,51 @@
+-- Define the structure for a contact
+local Contact = {}
+Contact.__index = Contact
+
+function Contact.new(name, phoneNumber)
+    local self = setmetatable({}, Contact)
+    self.name = name
+    self.phoneNumber = phoneNumber
+    self.prev = nil
+    self.next = nil
+    return self
+end
+
+-- Define the doubly linked list for the phonebook
+local Phonebook = {}
+Phonebook.__index = Phonebook
+
+function Phonebook.new()
+    local self = setmetatable({}, Phonebook)
+    self.head = nil
+    self.tail = nil
+    return self
+end
+
+function Phonebook:addContact(name, phoneNumber)
+    local newContact = Contact.new(name, phoneNumber)
+    if not self.head then
+        self.head = newContact
+        self.tail = newContact
+    else
+        self.tail.next = newContact
+        newContact.prev = self.tail
+        self.tail = newContact
+    end
+end
+
+function Phonebook:displayContacts()
+    local currentContact = self.head
+    while currentContact do
+        print(currentContact.name .. ": " .. currentContact.phoneNumber)
+        currentContact = currentContact.next
+    end
+end
+
+-- Example usage:
+local phonebook = Phonebook.new()
+phonebook:addContact("Alice", "123-456-7890")
+phonebook:addContact("Bob", "987-654-3210")
+phonebook:addContact("Charlie", "555-123-4567")
+
+phonebook:displayContacts()
